@@ -9,6 +9,9 @@ class SpapiOrders
     /**
      * Returns the order that you specify.
      *
+     * @param  string  $uri           Complete url for order.
+     * @param  string  $access_token  Access token to validate the request.
+     *
      * @return array{
      *     info: array{
      *         url: string,
@@ -113,9 +116,9 @@ class SpapiOrders
      * }
      * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderid
      */
-    public static function getOrder(string $orderId, string $access_token, string $base_uri = 'https://sellingpartnerapi-na.amazon.com/orders/v0/orders/'): array
+    public static function getOrder(string $uri, string $access_token): array
     {
-        $CurlHandle = curl_init($base_uri.$orderId);
+        $CurlHandle = curl_init($uri);
 
         curl_setopt_array($CurlHandle, [
             CURLOPT_HTTPHEADER => [
