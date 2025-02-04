@@ -124,7 +124,8 @@ class SpapiOrders
             CURLOPT_HTTPHEADER => [
                 "x-amz-access-token: $access_token",
             ],
-            CURLOPT_RETURNTRANSFER => true
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => true,
         ]);
 
         $response = curl_exec($CurlHandle);
