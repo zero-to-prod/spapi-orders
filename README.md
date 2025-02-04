@@ -48,7 +48,10 @@ Returns the order that you specify.
 ```php
 use Zerotoprod\SpapiOrders\SpapiOrders;
 
-$order = SpapiOrders::getOrder('amazon-order-id', 'access_token') 
+$order = SpapiOrders::getOrder(
+    'https://sellingpartnerapi-na.amazon.com/orders/v0/orders/123-1234567-1234567', 
+    'access_token'
+);
 ```
 
 ## Contributing
