@@ -7,10 +7,7 @@ use Zerotoprod\CurlHelper\CurlHelper;
 class SpapiOrders
 {
     /**
-     * Retrieves detailed information about an Amazon order.
-     *
-     * This method fetches and returns comprehensive data related to an Amazon order,
-     * including order specifics, response headers, and potential errors.
+     * Returns the order that you specify.
      *
      * @return array{
      *     info: array{
@@ -114,10 +111,11 @@ class SpapiOrders
      *         }
      *     }
      * }
+     * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderid
      */
-    public static function getOrder(string $amazon_order_id, string $access_token, string $base_uri = 'https://sellingpartnerapi-na.amazon.com/orders/v0/orders/'): array
+    public static function getOrder(string $orderId, string $access_token, string $base_uri = 'https://sellingpartnerapi-na.amazon.com/orders/v0/orders/'): array
     {
-        $CurlHandle = curl_init($base_uri.$amazon_order_id);
+        $CurlHandle = curl_init($base_uri.$orderId);
 
         curl_setopt_array($CurlHandle, [
             CURLOPT_HTTPHEADER => [
