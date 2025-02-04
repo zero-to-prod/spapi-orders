@@ -17,6 +17,7 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
+  - [getOrder](#getorder)
 - [Local Development](./LOCAL_DEVELOPMENT.md)
 - [Contributing](#contributing)
 
@@ -40,7 +41,15 @@ This will add the package to your project’s dependencies and create an autoloa
 
 ## Usage
 
+### getOrder
 
+Returns the order that you specify.
+
+```php
+use Zerotoprod\SpapiOrders\SpapiOrders;
+
+$order = SpapiOrders::getOrder('amazon-order-id', 'access_token') 
+```
 
 ## Contributing
 
