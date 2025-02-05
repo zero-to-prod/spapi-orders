@@ -219,8 +219,8 @@ class SpapiOrders
         ?string $EarliestDeliveryDateAfter = null,
         ?string $LatestDeliveryDateBefore = null,
         ?string $LatestDeliveryDateAfter = null,
-        array $options = [],
-        string $user_agent = null
+        string $user_agent = null,
+        array $options = []
     ): array {
         $query = http_build_query(
             array_filter([
@@ -252,8 +252,8 @@ class SpapiOrders
         return self::get(
             $base_uri.'/orders/v0/orders?'.$query,
             ["x-amz-access-token: $access_token"],
-            $options,
-            $user_agent
+            $user_agent,
+            $options
         );
     }
 
@@ -370,17 +370,23 @@ class SpapiOrders
      * }
      * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderid
      */
-    public static function getOrder(string $base_uri, string $access_token, string $orderId, array $options = [], ?string $user_agent = null): array
+    public static function getOrder(
+        string $base_uri,
+        string $access_token,
+        string $orderId,
+        ?string $user_agent = null,
+        array $options = []
+    ): array
     {
         return self::get(
             $base_uri.'/orders/v0/orders/'.$orderId,
             ["x-amz-access-token: $access_token"],
-            $options,
-            $user_agent
+            $user_agent,
+            $options
         );
     }
 
-    private static function get(string $url, array $headers, array $options = [], ?string $user_agent = null): array
+    private static function get(string $url, array $headers, ?string $user_agent = null, array $options = []): array
     {
         $CurlHandle = curl_init($url);
 
