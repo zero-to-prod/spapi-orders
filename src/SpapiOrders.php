@@ -264,6 +264,7 @@ class SpapiOrders
      * @param  string  $access_token  Access token to validate the request.
      * @param  string  $orderId       Amazon order id
      * @param  array   $options       Merge curl options.
+     * @param ?string  $user_agent    The user-agent for the request. If none is supplied, a default one will be provided.
      *
      * @return array{
      *     info: array{
