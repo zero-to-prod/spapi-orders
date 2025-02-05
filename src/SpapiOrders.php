@@ -380,26 +380,23 @@ class SpapiOrders
         );
     }
 
-    public static function get(string $url, array $headers, array $options = [], ?string $user_agent = null): array
+    private static function get(string $url, array $headers, array $options = [], ?string $user_agent = null): array
     {
         $CurlHandle = curl_init($url);
 
         curl_setopt_array(
             $CurlHandle,
-            array_merge(
-                [
-                    CURLOPT_HTTPHEADER => array_merge(
-                        $headers,
-                        [
-                            'x-amz-date: '.gmdate('Ymd\THis\Z'),
-                            'user-agent: '.($user_agent ?: '(Language=PHP/'.PHP_VERSION.'; Platform='.php_uname('s').'/'.php_uname('r').')')
-                        ]
-                    ),
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_HEADER => true,
-                ],
-                $options
-            )
+            [
+                CURLOPT_HTTPHEADER => array_merge(
+                    [
+                        'x-amz-date: '.gmdate('Ymd\THis\Z'),
+                        'user-agent: '.($user_agent ?: '(Language=PHP/'.PHP_VERSION.'; Platform='.php_uname('s').'/'.php_uname('r').')')
+                    ],
+                    $headers
+                ),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HEADER => true,
+            ] + $options
         );
 
         $response = curl_exec($CurlHandle);
