@@ -71,21 +71,21 @@ use Zerotoprod\SpapiOrders\SpapiOrders;
 $order = SpapiOrders::getOrders(
     'https://sellingpartnerapi-na.amazon.com', 
     'access_token',
-    'MarketplaceIds'
+    ['MarketplaceIds']
     'CreatedAfter'
     'CreatedBefore'
     'LastUpdatedAfter'
     'LastUpdatedBefore'
-    'OrderStatuses'
-    'FulfillmentChannels'
-    'PaymentMethods'
+    '[OrderStatuses']
+    ['FulfillmentChannels']
+    ['PaymentMethods']
     'BuyerEmail'
     'SellerOrderId'
-    'MaxResultsPerPage'
-    'EasyShipShipmentStatuses'
-    'ElectronicInvoiceStatuses'
+    MaxResultsPerPage
+    ['EasyShipShipmentStatuses']
+    ['ElectronicInvoiceStatuses']
     'NextToken'
-    'AmazonOrderIds'
+    ['AmazonOrderIds']
     'ActualFulfillmentSupplySourceId'
     'IsISPU'
     'StoreChainStoreId'
