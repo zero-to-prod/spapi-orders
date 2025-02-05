@@ -18,6 +18,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
   - [getOrder](#getorder)
+  - [getOrders](#getorders)
 - [Local Development](./LOCAL_DEVELOPMENT.md)
 - [Contributing](#contributing)
 
@@ -49,8 +50,54 @@ Returns the order that you specify.
 use Zerotoprod\SpapiOrders\SpapiOrders;
 
 $order = SpapiOrders::getOrder(
-    'https://sellingpartnerapi-na.amazon.com/orders/v0/orders/123-1234567-1234567', 
-    'access_token'
+    'https://sellingpartnerapi-na.amazon.com', 
+    'access_token',
+    '123-1234567-1234567',
+    [
+        'curl_options' => 'arbitrary',
+        CURLOPT_RETURNTRANSFER => true
+    ],
+    'user-agent'
+);
+```
+
+### getOrders
+
+Returns orders that you specify.
+
+```php
+use Zerotoprod\SpapiOrders\SpapiOrders;
+
+$order = SpapiOrders::getOrders(
+    'https://sellingpartnerapi-na.amazon.com', 
+    'access_token',
+    'MarketplaceIds'
+    'CreatedAfter'
+    'CreatedBefore'
+    'LastUpdatedAfter'
+    'LastUpdatedBefore'
+    'OrderStatuses'
+    'FulfillmentChannels'
+    'PaymentMethods'
+    'BuyerEmail'
+    'SellerOrderId'
+    'MaxResultsPerPage'
+    'EasyShipShipmentStatuses'
+    'ElectronicInvoiceStatuses'
+    'NextToken'
+    'AmazonOrderIds'
+    'ActualFulfillmentSupplySourceId'
+    'IsISPU'
+    'StoreChainStoreId'
+    'EarliestDeliveryDateBefore'
+    'EarliestDeliveryDateAfter'
+    'LatestDeliveryDateBefore'
+    'LatestDeliveryDateAfter'
+    [
+        'curl_options' => 'arbitrary',
+        CURLOPT_RETURNTRANSFER => true
+    ],
+    'user-agent'
 );
 ```
 
