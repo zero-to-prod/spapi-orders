@@ -194,7 +194,7 @@ class SpapiOrders
      *  }
      * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderid
      */
-    public function getOrders(
+    public static function getOrders(
         string $base_uri,
         string $access_token,
         array $MarketplaceIds,
