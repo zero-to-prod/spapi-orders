@@ -45,7 +45,7 @@ This will add the package to your project’s dependencies and create an autoloa
 
 ### getOrders
 
-Returns orders that you specify.
+Returns orders that are created or updated during the specified time period. If you want to return specific types of orders, you can apply filters to your request. NextToken doesn't affect any filters that you include in your request; it only impacts the pagination for the filtered orders response.
 
 ```php
 use Zerotoprod\SpapiOrders\SpapiOrders;
@@ -98,7 +98,9 @@ $order = SpapiOrders::getOrder(
 
 ### getOrderItems
 
-Returns the order that you specify.
+Returns detailed order item information for the order that you specify. If NextToken is provided, it's used to retrieve the next page of order items.
+
+Note: When an order is in the Pending state (the order has been placed but payment has not been authorized), the getOrderItems operation does not return information about pricing, taxes, shipping charges, gift status or promotions for the order items in the order. After an order leaves the Pending state (this occurs when payment has been authorized) and enters the Unshipped, Partially Shipped, or Shipped state, the getOrderItems operation returns information about pricing, taxes, shipping charges, gift status and promotions for the order items in the order.
 
 ```php
 use Zerotoprod\SpapiOrders\SpapiOrders;
