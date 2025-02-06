@@ -17,8 +17,9 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [getOrder](#getorder)
   - [getOrders](#getorders)
+  - [getOrder](#getorder)
+  - [getOrderItems](#getorderitems)
 - [Local Development](./LOCAL_DEVELOPMENT.md)
 - [Contributing](#contributing)
 
