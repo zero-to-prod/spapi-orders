@@ -4,6 +4,14 @@ namespace Zerotoprod\SpapiOrders;
 
 use Zerotoprod\CurlHelper\CurlHelper;
 
+/**
+ * Use the Orders Selling Partner API to programmatically retrieve order information.
+ * With this API, you can develop fast, flexible, and custom applications to manage
+ * order synchronization, perform order research, and create demand-based decision
+ * support tools.
+ *
+ * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference
+ */
 class SpapiOrders
 {
     /**
@@ -376,8 +384,7 @@ class SpapiOrders
         string $orderId,
         ?string $user_agent = null,
         array $options = []
-    ): array
-    {
+    ): array {
         return self::get(
             $base_uri.'/orders/v0/orders/'.$orderId,
             ["x-amz-access-token: $access_token"],
