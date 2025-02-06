@@ -42,25 +42,6 @@ This will add the package to your project’s dependencies and create an autoloa
 
 ## Usage
 
-### getOrder
-
-Returns the order that you specify.
-
-```php
-use Zerotoprod\SpapiOrders\SpapiOrders;
-
-$order = SpapiOrders::getOrder(
-    'https://sellingpartnerapi-na.amazon.com', 
-    'access_token',
-    '123-1234567-1234567',
-    [
-        'curl_options' => 'arbitrary',
-        CURLOPT_RETURNTRANSFER => true
-    ],
-    'user-agent'
-);
-```
-
 ### getOrders
 
 Returns orders that you specify.
@@ -93,11 +74,40 @@ $order = SpapiOrders::getOrders(
     'EarliestDeliveryDateAfter'
     'LatestDeliveryDateBefore'
     'LatestDeliveryDateAfter'
-    [
-        'curl_options' => 'arbitrary',
-        CURLOPT_RETURNTRANSFER => true
-    ],
-    'user-agent'
+    'user-agent',
+    ['curl-options']
+);
+```
+
+### getOrder
+
+Returns the order that you specify.
+
+```php
+use Zerotoprod\SpapiOrders\SpapiOrders;
+
+$order = SpapiOrders::getOrder(
+    'https://sellingpartnerapi-na.amazon.com', 
+    'access_token',
+    '123-1234567-1234567',
+    'user-agent',
+    ['curl-options']
+);
+```
+
+### getOrderItems
+
+Returns the order that you specify.
+
+```php
+use Zerotoprod\SpapiOrders\SpapiOrders;
+
+$order = SpapiOrders::getOrderItems(
+    'https://sellingpartnerapi-na.amazon.com', 
+    'access_token',
+    '123-1234567-1234567',
+    'user-agent',
+    ['curl-options']
 );
 ```
 
