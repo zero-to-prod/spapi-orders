@@ -50,7 +50,7 @@ Returns orders that are created or updated during the specified time period. If 
 ```php
 use Zerotoprod\SpapiOrders\SpapiOrders;
 
-$order = SpapiOrders::getOrders(
+$orders_response = SpapiOrders::getOrders(
     'https://sellingpartnerapi-na.amazon.com', 
     'access_token',
     ['MarketplaceIds']
@@ -78,6 +78,8 @@ $order = SpapiOrders::getOrders(
     'user-agent',
     ['curl-options']
 );
+
+$amazon_order_id = $orders_response['response']['payload']['Orders'][0]['AmazonOrderId']
 ```
 
 ### getOrder
@@ -87,13 +89,15 @@ Returns the order that you specify.
 ```php
 use Zerotoprod\SpapiOrders\SpapiOrders;
 
-$order = SpapiOrders::getOrder(
+$orders_response = SpapiOrders::getOrder(
     'https://sellingpartnerapi-na.amazon.com', 
     'access_token',
     '123-1234567-1234567',
     'user-agent',
     ['curl-options']
 );
+
+$amazon_order_id = $orders_response['response']['payload']['AmazonOrderId']
 ```
 
 ### getOrderItems
@@ -105,13 +109,15 @@ Note: When an order is in the Pending state (the order has been placed but payme
 ```php
 use Zerotoprod\SpapiOrders\SpapiOrders;
 
-$order = SpapiOrders::getOrderItems(
+$order_items_response = SpapiOrders::getOrderItems(
     'https://sellingpartnerapi-na.amazon.com', 
     'access_token',
     '123-1234567-1234567',
     'user-agent',
     ['curl-options']
 );
+
+$seller_sku = $order_items_response['response']['payload']['OrderItems'][0]['SellerSKU']
 ```
 
 ## Contributing
