@@ -471,7 +471,7 @@ class SpapiOrders
      *         }
      *     }
      * }
-     * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderid
+     * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderidbuyerinfo
      */
     public static function getOrderBuyerInfo(
         string $base_uri,
