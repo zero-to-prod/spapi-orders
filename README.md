@@ -19,6 +19,7 @@
 - [Usage](#usage)
   - [getOrders](#getorders)
   - [getOrder](#getorder)
+  - [getOrderBuyerInfo](#getorderbuyerinfo)
   - [getOrderItems](#getorderitems)
 - [Local Development](./LOCAL_DEVELOPMENT.md)
 - [Contributing](#contributing)
@@ -98,6 +99,24 @@ $orders_response = SpapiOrders::getOrder(
 );
 
 $amazon_order_id = $orders_response['response']['payload']['AmazonOrderId']
+```
+
+### getOrderBuyerInfo
+
+Returns buyer information for the order that you specify.
+
+```php
+use Zerotoprod\SpapiOrders\SpapiOrders;
+
+$orders_response = SpapiOrders::getOrderBuyerInfo(
+    'https://sellingpartnerapi-na.amazon.com', 
+    'access_token',
+    '123-1234567-1234567',
+    'user-agent',
+    ['curl-options']
+);
+
+$buyer_name = $orders_response['response']['payload']['BuyerName']
 ```
 
 ### getOrderItems
