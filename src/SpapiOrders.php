@@ -21,7 +21,7 @@ class SpapiOrders
      * request; it only impacts the pagination for the filtered orders
      * response.
      *
-     * @param  string   $base_uri                         Base endpoint for order.
+     * @param  string   $base_uri                         Base endpoint for order. Example: `https://sellingpartnerapi-na.amazon.com`
      * @param  string   $access_token                     Access token to validate the request.
      * @param  array    $MarketplaceIds                   A list of `MarketplaceId` values. Used to select orders that were placed in the specified marketplaces.
      *
@@ -274,7 +274,7 @@ class SpapiOrders
     /**
      * Returns the order that you specify.
      *
-     * @param  string  $base_uri      Base endpoint for order.
+     * @param  string  $base_uri      Base endpoint for order. Example: `https://sellingpartnerapi-na.amazon.com`
      * @param  string  $access_token  Access token to validate the request.
      * @param  string  $orderId       Amazon order id
      * @param  array   $options       Merge curl options.
@@ -402,7 +402,7 @@ class SpapiOrders
     /**
      * Returns buyer information for the order that you specify.
      *
-     * @param  string  $base_uri      Base endpoint for order.
+     * @param  string  $base_uri      Base endpoint for order. Example: `https://sellingpartnerapi-na.amazon.com`
      * @param  string  $access_token  Access token to validate the request.
      * @param  string  $orderId       Amazon order id
      * @param  array   $options       Merge curl options.
@@ -493,7 +493,7 @@ class SpapiOrders
      *
      * Note: When an order is in the Pending state (the order has been placed but payment has not been authorized), the getOrderItems operation does not return information about pricing, taxes, shipping charges, gift status or promotions for the order items in the order. After an order leaves the Pending state (this occurs when payment has been authorized) and enters the Unshipped, Partially Shipped, or Shipped state, the getOrderItems operation returns information about pricing, taxes, shipping charges, gift status and promotions for the order items in the order.
      *
-     * @param  string  $base_uri      Base endpoint for order.
+     * @param  string  $base_uri      Base endpoint for order. Example: `https://sellingpartnerapi-na.amazon.com`
      * @param  string  $access_token  Access token to validate the request.
      * @param  string  $orderId       Amazon order id
      * @param  array   $options       Merge curl options.
