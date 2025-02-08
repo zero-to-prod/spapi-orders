@@ -264,7 +264,7 @@ class SpapiOrders
         );
 
         return self::get(
-            $base_uri.'/orders/v0/orders?'.$query,
+            "$base_uri/orders/v0/orders?$query",
             ["x-amz-access-token: $access_token"],
             $user_agent,
             $options
@@ -392,7 +392,7 @@ class SpapiOrders
         array $options = []
     ): array {
         return self::get(
-            $base_uri.'/orders/v0/orders/'.$orderId,
+            "$base_uri/orders/v0/orders/$orderId",
             ["x-amz-access-token: $access_token"],
             $user_agent,
             $options
@@ -625,7 +625,7 @@ class SpapiOrders
         array $options = []
     ): array {
         return self::get(
-            $base_uri.'/orders/v0/orders/'.$orderId.'/orderItems',
+            "$base_uri/orders/v0/orders/$orderId/orderItems",
             ["x-amz-access-token: $access_token"],
             $user_agent,
             $options
