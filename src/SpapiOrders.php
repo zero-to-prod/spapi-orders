@@ -489,7 +489,7 @@ class SpapiOrders
     }
 
     /**
-     * Returns buyer information for the order that you specify.
+     * Returns the shipping address for the order that you specify.
      *
      * @param  string  $base_uri      Base endpoint for order. Example: `https://sellingpartnerapi-na.amazon.com`
      * @param  string  $access_token  Access token to validate the request.
