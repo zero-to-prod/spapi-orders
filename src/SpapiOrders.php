@@ -261,7 +261,7 @@ class SpapiOrders
      *      }
      *    }
      *  }
-     * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderid
+     * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0orders
      */
     public function getOrders(
         array $MarketplaceIds,
@@ -635,7 +635,7 @@ class SpapiOrders
      *         }
      *     }
      * }
-     * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderidbuyerinfo
+     * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderidaddress
      */
     public function getOrderAddress(string $orderId, array $options = []): array
     {
@@ -777,6 +777,107 @@ class SpapiOrders
     {
         return $this->get(
             "$this->base_uri/orders/v0/orders/$orderId/orderItems",
+            ["x-amz-access-token: $this->access_token"],
+            $this->user_agent,
+            array_merge($options, $this->options)
+        );
+    }
+
+    /**
+     * Returns detailed buyer information for each order item within the specified order. If NextToken is provided, it's used to retrieve the next page of order items.
+     *
+     * Note:
+     * - This operation provides buyer-specific information like gift wrapping details, customizations, etc.
+     * - The response includes sensitive buyer data which might require additional permissions for access.
+     * - For orders in the Pending state, information about pricing, taxes, shipping charges, gift status or promotions is not included. Once payment is authorized and the order moves to Unshipped, Partially Shipped, or Shipped, this information becomes available.
+     *
+     * @param  string  $orderId  Amazon order id
+     * @param  array   $options  Merge curl options.
+     *
+     * @return array{
+     *     info: array{
+     *         url: string,
+     *         content_type: string,
+     *         http_code: int,
+     *         header_size: int,
+     *         request_size: int,
+     *         filetime: int,
+     *         ssl_verify_result: int,
+     *         redirect_count: int,
+     *         total_time: float,
+     *         namelookup_time: float,
+     *         connect_time: float,
+     *         pretransfer_time: float,
+     *         size_upload: int,
+     *         size_download: int,
+     *         speed_download: int,
+     *         speed_upload: int,
+     *         download_content_length: int,
+     *         upload_content_length: int,
+     *         starttransfer_time: float,
+     *         redirect_time: float,
+     *         redirect_url: string,
+     *         primary_ip: string,
+     *         certinfo: array,
+     *         primary_port: int,
+     *         local_ip: string,
+     *         local_port: int,
+     *         http_version: int,
+     *         protocol: int,
+     *         ssl_verifyresult: int,
+     *         scheme: string,
+     *         appconnect_time_us: int,
+     *         connect_time_us: int,
+     *         namelookup_time_us: int,
+     *         pretransfer_time_us: int,
+     *         redirect_time_us: int,
+     *         starttransfer_time_us: int,
+     *         total_time_us: int
+     *     },
+     *     error: string,
+     *     headers: array{
+     *         Server: string,
+     *         Date: string,
+     *         Content-Type: string,
+     *         Content-Length: string,
+     *         Connection: string,
+     *         X-Amz-Rid: string,
+     *         X-Amzn-Ratelimit-Limit: string,
+     *         X-Amzn-Requestid: string,
+     *         X-Amz-Apigw-Id: string,
+     *         X-Amzn-Trace-Id: string,
+     *         Vary: string,
+     *         Strict-Transport-Security: string
+     *     },
+     *     response: array{
+     *         payload: array{
+     *             AmazonOrderId: string,
+     *             NextToken: string|null,
+     *             OrderItems: array<array{
+     *                 OrderItemId: string,
+     *                 BuyerCustomizedInfo: array{
+     *                     CustomizedURL: string
+     *                 }|null,
+     *                 GiftWrapPrice: array{
+     *                     CurrencyCode: string,
+     *                     Amount: string
+     *                 }|null,
+     *                 GiftWrapTax: array{
+     *                     CurrencyCode: string,
+     *                     Amount: string
+     *                 }|null,
+     *                 GiftMessageText: string|null,
+     *                 GiftWrapLevel: string|null
+     *             }>
+     *         }
+     *     }
+     * }
+     * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderidorderitemsbuyerinfo
+     */
+    public function getOrderItemsBuyerInfo(string $orderId, array $options = []): array
+    {
+        return $this->get(
+            "$this->base_uri/orders/v0/orders/$orderId/orderItems/buyerInfo",
             ["x-amz-access-token: $this->access_token"],
             $this->user_agent,
             array_merge($options, $this->options)
