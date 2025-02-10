@@ -15,14 +15,70 @@ use Zerotoprod\CurlHelper\CurlHelper;
 class SpapiOrders
 {
     /**
+     * @var string
+     */
+    private $access_token;
+    /**
+     * @var string
+     */
+    private $base_uri;
+    /**
+     * @var string|null
+     */
+    private $user_agent;
+    /**
+     * @var array
+     */
+    private $options;
+
+    /**
+     * Instantiate this class.
+     *
+     * @param  string       $access_token  Access token to validate the request.
+     * @param  string       $base_uri      The base URI for the Orders API
+     * @param  string|null  $user_agent    The user-agent for the request. If none is supplied, a default one will be provided.
+     * @param  array        $options       Merve curl options.
+     *
+     * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference
+     */
+    public function __construct(
+        string $access_token,
+        string $base_uri = 'https://sellingpartnerapi-na.amazon.com',
+        ?string $user_agent = null,
+        array $options = []
+    ) {
+        $this->access_token = $access_token;
+        $this->base_uri = $base_uri;
+        $this->user_agent = $user_agent;
+        $this->options = $options;
+    }
+
+    /**
+     * Instantiate this class.
+     *
+     * @param  string       $access_token  Access token to validate the request.
+     * @param  string       $base_uri      The base URI for the Orders API
+     * @param  string|null  $user_agent    The user-agent for the request. If none is supplied, a default one will be provided.
+     * @param  array        $options       Merve curl options.
+     *
+     * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference
+     */
+    public static function from(
+        string $access_token,
+        string $base_uri = 'https://sellingpartnerapi-na.amazon.com',
+        ?string $user_agent = null,
+        array $options = []
+    ): SpapiOrders {
+        return new self($access_token, $base_uri, $user_agent, $options);
+    }
+
+    /**
      * Returns orders that are created or updated during the specified time period.
      * If you want to return specific types of orders, you can apply filters to your
      * request. NextToken doesn't affect any filters that you include in your
      * request; it only impacts the pagination for the filtered orders
      * response.
      *
-     * @param  string   $base_uri                         Base endpoint for order. Example: `https://sellingpartnerapi-na.amazon.com`
-     * @param  string   $access_token                     Access token to validate the request.
      * @param  array    $MarketplaceIds                   A list of `MarketplaceId` values. Used to select orders that were placed in the specified marketplaces.
      *
      *  Refer to [Marketplace IDs](https://developer-docs.amazon.com/sp-api/docs/marketplace-ids) for a complete list of `marketplaceId` values.
@@ -95,7 +151,6 @@ class SpapiOrders
      * @param  ?string  $LatestDeliveryDateBefore         Use this date to select orders with a latest delivery date before (or at) a specified time. The date must be in [ISO 8601](https://developer-docs.amazon.com/sp-api/docs/iso-8601) format.
      * @param  ?string  $LatestDeliveryDateAfter          Use this date to select orders with a latest delivery date after (or at) a specified time. The date must be in [ISO 8601](https://developer-docs.amazon.com/sp-api/docs/iso-8601) format.
      * @param  array    $options                          Merge curl options.
-     * @param ?string   $user_agent                       The user-agent for the request. If none is supplied, a default one will be provided.
      *
      * @return array{
      *    "info": array{
@@ -208,9 +263,7 @@ class SpapiOrders
      *  }
      * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderid
      */
-    public static function getOrders(
-        string $base_uri,
-        string $access_token,
+    public function getOrders(
         array $MarketplaceIds,
         ?string $CreatedAfter = null,
         ?string $CreatedBefore = null,
@@ -233,7 +286,6 @@ class SpapiOrders
         ?string $EarliestDeliveryDateAfter = null,
         ?string $LatestDeliveryDateBefore = null,
         ?string $LatestDeliveryDateAfter = null,
-        string $user_agent = null,
         array $options = []
     ): array {
         $query = http_build_query(
@@ -263,22 +315,19 @@ class SpapiOrders
             ])
         );
 
-        return self::get(
-            "$base_uri/orders/v0/orders?$query",
-            ["x-amz-access-token: $access_token"],
-            $user_agent,
-            $options
+        return $this->get(
+            "$this->base_uri/orders/v0/orders?$query",
+            ["x-amz-access-token: $this->access_token"],
+            $this->user_agent,
+            array_merge($options, $this->options)
         );
     }
 
     /**
      * Returns the order that you specify.
      *
-     * @param  string  $base_uri      Base endpoint for order. Example: `https://sellingpartnerapi-na.amazon.com`
-     * @param  string  $access_token  Access token to validate the request.
-     * @param  string  $orderId       Amazon order id
-     * @param  array   $options       Merge curl options.
-     * @param ?string  $user_agent    The user-agent for the request. If none is supplied, a default one will be provided.
+     * @param  string  $orderId  Amazon order id
+     * @param  array   $options  Merge curl options.
      *
      * @return array{
      *     info: array{
@@ -384,29 +433,21 @@ class SpapiOrders
      * }
      * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderid
      */
-    public static function getOrder(
-        string $base_uri,
-        string $access_token,
-        string $orderId,
-        ?string $user_agent = null,
-        array $options = []
-    ): array {
-        return self::get(
-            "$base_uri/orders/v0/orders/$orderId",
-            ["x-amz-access-token: $access_token"],
-            $user_agent,
-            $options
+    public function getOrder(string $orderId, array $options = []): array
+    {
+        return $this->get(
+            "$this->base_uri/orders/v0/orders/$orderId",
+            ["x-amz-access-token: $this->access_token"],
+            $this->user_agent,
+            array_merge($options, $this->options)
         );
     }
 
     /**
      * Returns buyer information for the order that you specify.
      *
-     * @param  string  $base_uri      Base endpoint for order. Example: `https://sellingpartnerapi-na.amazon.com`
-     * @param  string  $access_token  Access token to validate the request.
-     * @param  string  $orderId       Amazon order id
-     * @param  array   $options       Merge curl options.
-     * @param ?string  $user_agent    The user-agent for the request. If none is supplied, a default one will be provided.
+     * @param  string  $orderId  Amazon order id
+     * @param  array   $options  Merge curl options.
      *
      * @return array{
      *     info: array{
@@ -473,29 +514,21 @@ class SpapiOrders
      * }
      * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderidbuyerinfo
      */
-    public static function getOrderBuyerInfo(
-        string $base_uri,
-        string $access_token,
-        string $orderId,
-        ?string $user_agent = null,
-        array $options = []
-    ): array {
-        return self::get(
-            "$base_uri/orders/v0/orders/$orderId/buyerInfo",
-            ["x-amz-access-token: $access_token"],
-            $user_agent,
-            $options
+    public function getOrderBuyerInfo(string $orderId, array $options = []): array
+    {
+        return $this->get(
+            "$this->base_uri/orders/v0/orders/$orderId/buyerInfo",
+            ["x-amz-access-token: $this->access_token"],
+            $this->user_agent,
+            array_merge($options, $this->options)
         );
     }
 
     /**
      * Returns the shipping address for the order that you specify.
      *
-     * @param  string  $base_uri      Base endpoint for order. Example: `https://sellingpartnerapi-na.amazon.com`
-     * @param  string  $access_token  Access token to validate the request.
-     * @param  string  $orderId       Amazon order id
-     * @param  array   $options       Merge curl options.
-     * @param ?string  $user_agent    The user-agent for the request. If none is supplied, a default one will be provided.
+     * @param  string  $orderId  Amazon order id
+     * @param  array   $options  Merge curl options.
      *
      * @return array{
      *     info: array{
@@ -604,18 +637,13 @@ class SpapiOrders
      * }
      * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderidbuyerinfo
      */
-    public static function getOrderAddress(
-        string $base_uri,
-        string $access_token,
-        string $orderId,
-        ?string $user_agent = null,
-        array $options = []
-    ): array {
-        return self::get(
-            "$base_uri/orders/v0/orders/$orderId/address",
-            ["x-amz-access-token: $access_token"],
-            $user_agent,
-            $options
+    public function getOrderAddress(string $orderId, array $options = []): array
+    {
+        return $this->get(
+            "$this->base_uri/orders/v0/orders/$orderId/address",
+            ["x-amz-access-token: $this->access_token"],
+            $this->user_agent,
+            array_merge($options, $this->options)
         );
     }
 
@@ -624,11 +652,8 @@ class SpapiOrders
      *
      * Note: When an order is in the Pending state (the order has been placed but payment has not been authorized), the getOrderItems operation does not return information about pricing, taxes, shipping charges, gift status or promotions for the order items in the order. After an order leaves the Pending state (this occurs when payment has been authorized) and enters the Unshipped, Partially Shipped, or Shipped state, the getOrderItems operation returns information about pricing, taxes, shipping charges, gift status and promotions for the order items in the order.
      *
-     * @param  string  $base_uri      Base endpoint for order. Example: `https://sellingpartnerapi-na.amazon.com`
-     * @param  string  $access_token  Access token to validate the request.
-     * @param  string  $orderId       Amazon order id
-     * @param  array   $options       Merge curl options.
-     * @param ?string  $user_agent    The user-agent for the request. If none is supplied, a default one will be provided.
+     * @param  string  $orderId  Amazon order id
+     * @param  array   $options  Merge curl options.
      *
      * @return array{
      *     info: array{
@@ -748,22 +773,17 @@ class SpapiOrders
      * }
      * @link https://developer-docs.amazon.com/sp-api/docs/orders-api-v0-reference#get-ordersv0ordersorderid
      */
-    public static function getOrderItems(
-        string $base_uri,
-        string $access_token,
-        string $orderId,
-        ?string $user_agent = null,
-        array $options = []
-    ): array {
-        return self::get(
-            "$base_uri/orders/v0/orders/$orderId/orderItems",
-            ["x-amz-access-token: $access_token"],
-            $user_agent,
-            $options
+    public function getOrderItems(string $orderId, array $options = []): array
+    {
+        return $this->get(
+            "$this->base_uri/orders/v0/orders/$orderId/orderItems",
+            ["x-amz-access-token: $this->access_token"],
+            $this->user_agent,
+            array_merge($options, $this->options)
         );
     }
 
-    private static function get(string $url, array $headers, ?string $user_agent = null, array $options = []): array
+    private function get(string $url, array $headers, ?string $user_agent = null, array $options = []): array
     {
         $CurlHandle = curl_init($url);
 
