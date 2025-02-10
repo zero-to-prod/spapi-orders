@@ -51,9 +51,8 @@ Returns orders that are created or updated during the specified time period. If 
 ```php
 use Zerotoprod\SpapiOrders\SpapiOrders;
 
-$orders_response = SpapiOrders::getOrders(
-    'https://sellingpartnerapi-na.amazon.com', 
-    'access_token',
+$orders_response = SpapiOrders::from('access_token')
+->getOrders(
     ['MarketplaceIds']
     'CreatedAfter'
     'CreatedBefore'
@@ -76,7 +75,6 @@ $orders_response = SpapiOrders::getOrders(
     'EarliestDeliveryDateAfter'
     'LatestDeliveryDateBefore'
     'LatestDeliveryDateAfter'
-    'user-agent',
     ['curl-options']
 );
 
@@ -90,15 +88,10 @@ Returns the order that you specify.
 ```php
 use Zerotoprod\SpapiOrders\SpapiOrders;
 
-$orders_response = SpapiOrders::getOrder(
-    'https://sellingpartnerapi-na.amazon.com', 
-    'access_token',
-    '123-1234567-1234567',
-    'user-agent',
-    ['curl-options']
-);
+$order_response = SpapiOrders::from('access_token')
+    ->getOrder('123-1234567-1234567', ['curl-options']);
 
-$amazon_order_id = $orders_response['response']['payload']['AmazonOrderId']
+$amazon_order_id = $order_response['response']['payload']['AmazonOrderId']
 ```
 
 ### getOrderBuyerInfo
@@ -108,15 +101,10 @@ Returns buyer information for the order that you specify.
 ```php
 use Zerotoprod\SpapiOrders\SpapiOrders;
 
-$orders_response = SpapiOrders::getOrderBuyerInfo(
-    'https://sellingpartnerapi-na.amazon.com', 
-    'access_token',
-    '123-1234567-1234567',
-    'user-agent',
-    ['curl-options']
-);
+$order_response = SpapiOrders::from('access_token')
+    ->getOrderBuyerInfo('123-1234567-1234567', ['curl-options']);
 
-$buyer_name = $orders_response['response']['payload']['BuyerName']
+$buyer_name = $order_response['response']['payload']['BuyerName']
 ```
 
 ### getOrderItems
@@ -128,13 +116,8 @@ Note: When an order is in the Pending state (the order has been placed but payme
 ```php
 use Zerotoprod\SpapiOrders\SpapiOrders;
 
-$order_items_response = SpapiOrders::getOrderItems(
-    'https://sellingpartnerapi-na.amazon.com', 
-    'access_token',
-    '123-1234567-1234567',
-    'user-agent',
-    ['curl-options']
-);
+$order_items_response = SpapiOrders::from('access_token')
+    ->getOrderItems('123-1234567-1234567', ['curl-options']);
 
 $seller_sku = $order_items_response['response']['payload']['OrderItems'][0]['SellerSKU']
 ```
