@@ -8,7 +8,7 @@
       "moby": true
     },
     "ghcr.io/devcontainers/features/php:1": {
-      "version": "7.1"
+      "version": "8.1"
     }
   },
   "postCreateCommand": ".devcontainer/postCreateCommand.sh",
