@@ -18,10 +18,14 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [getOrders](#getorders)
-  - [getOrder](#getorder)
-  - [getOrderBuyerInfo](#getorderbuyerinfo)
-  - [getOrderItems](#getorderitems)
+    - [getOrders](#getorders)
+    - [getOrder](#getorder)
+    - [getOrderBuyerInfo](#getorderbuyerinfo)
+    - [getOrderAddress](#getorderaddress)
+    - [getOrderItems](#getorderitems)
+    - [getOrderItemsBuyerInfo](#getorderitemsbuyerinfo)
+- [Testing](#testing)
+    - [Factories](#factories)
 - [Local Development](./LOCAL_DEVELOPMENT.md)
 - [Contributing](#contributing)
 
@@ -47,7 +51,8 @@ This will add the package to your project’s dependencies and create an autoloa
 
 ### getOrders
 
-Returns orders that are created or updated during the specified time period. If you want to return specific types of orders, you can apply filters to your request. NextToken doesn't affect any filters that you include in your request; it only impacts the pagination for the filtered orders response.
+Returns orders that are created or updated during the specified time period. If you want to return specific types of orders, you can apply filters to
+your request. NextToken doesn't affect any filters that you include in your request; it only impacts the pagination for the filtered orders response.
 
 ```php
 use Zerotoprod\SpapiOrders\SpapiOrders;
@@ -108,11 +113,33 @@ $order_response = SpapiOrders::from('access_token')
 $buyer_name = $order_response['response']['payload']['BuyerName']
 ```
 
+### getOrderAddress
+
+Returns the shipping address for a specific order.
+
+```php
+use Zerotoprod\SpapiOrders\SpapiOrders;
+
+$address_response = SpapiOrders::from('access_token')
+    ->getOrderAddress(
+        orderId: '123-1234567-1234567',
+        options: [
+            CURLOPT_TIMEOUT => 30,
+        ]
+    );
+
+$shipping_address = $address_response['response']['payload'];
+$address_line1 = $shipping_address['ShippingAddress']['AddressLine1'];
+```
+
 ### getOrderItems
 
 Returns detailed order item information for the order that you specify. If NextToken is provided, it's used to retrieve the next page of order items.
 
-Note: When an order is in the Pending state (the order has been placed but payment has not been authorized), the getOrderItems operation does not return information about pricing, taxes, shipping charges, gift status or promotions for the order items in the order. After an order leaves the Pending state (this occurs when payment has been authorized) and enters the Unshipped, Partially Shipped, or Shipped state, the getOrderItems operation returns information about pricing, taxes, shipping charges, gift status and promotions for the order items in the order.
+Note: When an order is in the Pending state (the order has been placed but payment has not been authorized), the getOrderItems operation does not
+return information about pricing, taxes, shipping charges, gift status or promotions for the order items in the order. After an order leaves the
+Pending state (this occurs when payment has been authorized) and enters the Unshipped, Partially Shipped, or Shipped state, the getOrderItems
+operation returns information about pricing, taxes, shipping charges, gift status and promotions for the order items in the order.
 
 ```php
 use Zerotoprod\SpapiOrders\SpapiOrders;
@@ -121,6 +148,54 @@ $order_items_response = SpapiOrders::from('access_token')
     ->getOrderItems('123-1234567-1234567', ['curl-options']);
 
 $seller_sku = $order_items_response['response']['payload']['OrderItems'][0]['SellerSKU']
+```
+
+### getOrderItemsBuyerInfo
+
+Returns detailed buyer information for each order item within a specific order.
+
+```php
+use Zerotoprod\SpapiOrders\SpapiOrders;
+
+$items_buyer_info_response = SpapiOrders::from('access_token')
+    ->getOrderItemsBuyerInfo(
+        orderId: '123-1234567-1234567',
+        options: [
+            CURLOPT_TIMEOUT => 30,
+        ]
+    );
+
+$items_buyer_info_response['response']['payload']['OrderItems'][0]['OrderItemId'];
+```
+
+## Testing
+
+The package provides `SpapiOrdersFake` for testing your application without making real API calls:
+
+```php
+use Zerotoprod\SpapiOrders\Support\Testing\SpapiOrdersFake;
+
+$response = SpapiOrdersFake::fake(['response' => ['payload' => ['order' => 1]]]);
+
+SpapiOrders::from('access_token')->getOrder('123-1234567-1234567');
+
+$this->assertEquals(1, $response->getOrder('123-1234567-1234567')['response']['payload']['order']);
+```
+
+### Factories
+
+Use the factory to populate the fake response with dummy data:
+
+```php
+$response = SpapiOrdersFake::fake(
+    SpapiOrdersResponseFactory::factory([
+        'response' => ['payload' => ['order' => 1]]
+    ])->make()
+);
+
+SpapiOrders::from('access_token')->getOrder('123-1234567-1234567');
+
+$this->assertEquals(1, $response->getOrder('123-1234567-1234567')['response']['payload']['order']);
 ```
 
 ## Contributing
