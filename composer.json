@@ -36,7 +36,7 @@
     "zero-to-prod/curl-helper": "^1.0",
     "ext-json": "*",
     "ext-curl": "*",
-    "zero-to-prod/container": "^0.1.0",
+    "zero-to-prod/container": "^0.1.0 || ^0.2.0",
     "zero-to-prod/factory": "^0.1.1",
     "zero-to-prod/package-helper": "^1.1.3"
   },
